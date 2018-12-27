@@ -1,0 +1,14 @@
+version: '3'
+services:
+  ruby:
+    build: .
+    image: alyssontkd/cucumber
+    container_name: 'cucumber-v1.0'
+    ports:
+     - "80:80"
+    #volumes:
+    # - /var/www/docker/glpi:/var/www/html/dev.glpi.com.br
+    # - /var/www/docker/logs/apache2/glpi:/var/log/apache2
+    environment:
+     - APPLICATION_ENV=development
+
