@@ -41,16 +41,23 @@ RUN curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-ke
     apt-get -yqq install google-chrome-stable && \
     rm -rf /var/lib/apt/lists/*
 
-COPY docker-entrypoint.sh /usr/local/bin/
-
-ENTRYPOINT ["docker-entrypoint.sh"]
+#COPY docker-entrypoint.sh /usr/local/bin/
+#ENTRYPOINT ["docker-entrypoint.sh"]
 
 RUN echo "[******] Copying security certified.";
 COPY ./src/poupex.com.br.crt /usr/local/share/ca-certificates/
 
 RUN update-ca-certificates
 
+WORKDIR /usr/src/app
+
 COPY ./src/Gemfile /tmp
 COPY ./src/Gemfile.lock /tmp
 COPY ./src/config.yml /tmp
 COPY ./src/cucumber.yaml /tmp
+
+RUN gem update --system
+RUN gem install bundler
+
+COPY docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]

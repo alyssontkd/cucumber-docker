@@ -2,7 +2,7 @@
 set -e
 
 git_user='71225919134'
-git_pswd='#Magatti2018#'
+git_pswd='#Magatti2019#'
 glpi_dir='/var/www/html/dev.glpi.com.br'
 glpi_cred_file="${glpi_dir}/.git-credentials"
 script_banco_glpi='/var/www/html/script_inicial_glpi_docker.sql'
@@ -28,7 +28,7 @@ if ! [ -d "/var/www/html/dev.glpi.com.br/vendor" ]; then
     git checkout -f master
 
     ls -la ${glpi_dir}
-
+    mv install install.old
 fi
 
 echo "[ ****************** ] Changing owner and group from the Project to 'www-data' "
@@ -41,7 +41,7 @@ mysql -u root -h database-mysql-glpi -p12345678 < ${script_banco_glpi}
 
 echo "[ ****************** ] Ending Endpoint of Application"
 cd ${glpi_dir}
-mv install install.old
-echo "[ ****************** ] Successfull!!!!!!!!"
+#mv install install.old
+echo "[ ****************** ] A Aplicação foi finalizada com sucesso. Successfull!!!!!!!!"
 exec "$@"
 
