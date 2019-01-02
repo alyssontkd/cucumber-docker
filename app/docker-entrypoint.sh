@@ -6,6 +6,7 @@ git_pswd='#Magatti2018#'
 glpi_dir='/var/www/html/dev.glpi.com.br'
 glpi_cred_file="${glpi_dir}/.git-credentials"
 script_banco_glpi='/var/www/html/script_inicial_glpi_docker.sql'
+path_remote_origin='https://gitlab.poupex.com.br/poupex/software-livre/glpi-poupex.git'
 
 echo "[ ****************** ] Starting Endpoint of Application"
 if ! [ -d "/var/www/html/dev.glpi.com.br/vendor" ]; then
@@ -20,7 +21,7 @@ if ! [ -d "/var/www/html/dev.glpi.com.br/vendor" ]; then
     mkdir -p ${glpi_dir}
     cd ${glpi_dir}
     git init
-    git remote add origin https://gitlab.poupex.com.br/poupex/software-livre/glpi-poupex.git
+    git remote add origin ${path_remote_origin}
     git config credential.helper "store --file=${glpi_cred_file}"
     echo "https://${git_user}:${git_pswd}@gitlab.poupex.com.br" > "${glpi_cred_file}"
     git remote update

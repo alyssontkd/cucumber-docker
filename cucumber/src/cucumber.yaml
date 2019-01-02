@@ -1,0 +1,9 @@
+default: -p html -p bdd -p progress -p json -p docker
+html: --format html --out=log/features.html
+ponto: --format progress
+bdd: --format pretty
+progress: --format progress
+json: --format json --out=log/resultado.json
+homologa: AMBIENTE=homologacao
+docker: AMBIENTE=docker
+

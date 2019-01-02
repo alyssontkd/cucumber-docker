@@ -1,46 +1,53 @@
 version: '3'
 services:
-   web:
-     depends_on:
-        - database
-     build: ./app/Dockerfile
-     restart: always
-     image: poupex/ambiente-glpi
-     container_name: 'glpi-testes'
-     ports:
-        - "8003:80" #Porta mapeada no proxy reverso
-        - "4444:443"
-     volumes:
-        - /var/www/docker/cucumber-docker/app/glpi:/var/www/html/dev.glpi.com.br
-        - /var/www/docker/cucumber-docker/app/logs:/var/log/apache2
-     environment:
-        - APPLICATION_ENV=development
-     links:
-        - database
-        - ruby
-
-   database:
-     depends_on:
-        - ruby  
-     image: mysql:5.7
-     restart: always
-     container_name: 'database-mysql-glpi'   
-     command: mysqld --sql_mode="" --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;'
-     volumes:
-        - /var/www/docker/cucumber-docker/app/conf.d:/etc/mysql/conf.d
-        - /var/www/docker/cucumber-docker/app/mysql.conf.d:/etc/mysql/mysql.conf.d
-        - /var/www/docker/cucumber-docker/app/data:/var/lib/mysql
-        - /var/www/docker/cucumber-docker/app/log:/var/log/
-     environment:
-        MYSQL_ROOT_PASSWORD: 12345678
-        MYSQL_DATABASE: GLPIDOCKER
-     links:
-        - ruby
+#   web:
+#     depends_on:
+#        - database
+#     build:
+#        context: ./app
+#        dockerfile: Dockerfile
+#     restart: always
+#     image: poupex/ambiente-glpi
+#     container_name: 'glpi-testes'
+#     ports:
+#        - "8003:80" #Porta mapeada no proxy reverso
+#        - "4444:443"
+#     volumes:
+#        - /var/www/docker/cucumber-docker/app/glpi:/var/www/html/dev.glpi.com.br
+#        - /var/www/docker/cucumber-docker/app/logs:/var/log/apache2
+#     environment:
+#        - APPLICATION_ENV=development
+#     links:
+#        - database
+#        - ruby
+#
+#   database:
+#     depends_on:
+#        - ruby  
+#     image: mysql:5.7
+#     restart: always
+#     container_name: 'database-mysql-glpi'   
+#     command: mysqld --sql_mode="" --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;'
+#     volumes:
+#        - /var/www/docker/cucumber-docker/app/conf.d:/etc/mysql/conf.d
+#        - /var/www/docker/cucumber-docker/app/mysql.conf.d:/etc/mysql/mysql.conf.d
+#        - /var/www/docker/cucumber-docker/app/data:/var/lib/mysql
+#        - /var/www/docker/cucumber-docker/app/log:/var/log/
+#     environment:
+#        MYSQL_ROOT_PASSWORD: 12345678
+#        MYSQL_DATABASE: GLPIDOCKER
+#     links:
+#        - ruby
          
    ruby:
-     build: ./cucumber/Dockerfile
-     restart: always
+     build:
+        context: ./cucumber
+        dockerfile: Dockerfile
+ #    restart: always
      image: alyssontkd/cucumber
      container_name: 'cucumber-v1.0'
      environment:
         - APPLICATION_ENV=test
+     volumes:
+        - /var/www/docker/cucumber-docker/cucumber/projeto-qa:/usr/share/cucumber
+     tty: true

@@ -1,0 +1,32 @@
+#  Acessos do super usuário (Docker)
+ usuario_1: "usuario1"
+ user_senha_1: "12345678"
+
+ # Acessos do atendente do chamado (Docker)
+ atendente_1: "atendente1"
+ atenden_senha_1: "12345678"
+
+ usuario_2: "usuario1"
+ user_senha_2: "12345678"
+
+ # Acessos do atendente do chamado (Docker)
+ atendente_2: "atendente1"
+ atenden_senha_2: "12345678"
+
+ # -----------------------------------------------------
+ # Acessos do super usuário (Homologação)
+ usuario_hom: "user"
+ senha_hom: "12345678"
+
+ # Acessos do atendente do chamado (Homologação)
+ atendente_hom: "atendent"
+ atende_senha_hom: "12345678"
+
+ # -----------------------------------------------------
+ # Acessos do super usuário (teste)
+ usuario_teste: "user_teste"
+ senha_teste: "12345678"
+
+ # Acessos do atendente do chamado (teste)
+ atendente_teste: "atendente_teste"
+ atende_senha_teste: "12345678"
