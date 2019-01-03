@@ -20,19 +20,20 @@ if [ ! -e "${cucumber_dir}/Gemfile" ]; then
     git init
     git remote add origin ${path_remote_origin}
 
+    #Cria um arquivo com as credenciais para que todos os comandos que precisem de autenticação utilize este arquivo
+    git config credential.helper "store --file=${cucumber_cred_file}"
+    echo "https://${git_user}:${git_pswd}@gitlab.poupex.com.br" > "${cucumber_cred_file}"
     echo "[ ****************** ] Ending Endpoint of Application"
 fi
 
 echo "[ ****************** ] Arquivo já existe e foi localizado. Acessando diretorio da aplicacao"
 cd ${cucumber_dir}
 pwd
-git config credential.helper "store --file=${cucumber_cred_file}"
-echo "https://${git_user}:${git_pswd}@gitlab.poupex.com.br" > "${cucumber_cred_file}"
 git remote update
 git checkout -f master
-echo "[ ****************** ] Clone Successfull!!!!!!!!"
-echo "[ ****************** ] Ok!"
-
+git pull origin master
+git describe --tags
+echo "[ ****************** ] OK! Clone Successfull!"
 
 echo "[ ****************** ] Instalando as dependencias do Cucumber........."
 cp -av /tmp/config.yml ${cucumber_dir}/features/support
@@ -43,7 +44,7 @@ cp -av /tmp/cucumber.yaml ${cucumber_dir}
 #bundle config --delete frozen
 #bundle lock --add-platform ruby
 #bundle lock --add-platform x86_64-linux
-#bundle update
+bundle update
 #gem update
 #cucumber
 

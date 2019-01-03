@@ -1,9 +1,9 @@
-default: -p html -p bdd -p progress -p json -p docker
+default: -p html -p bdd -p progress -p json -p docker -p cucumber
+
 html: --format html --out=log/features.html
-ponto: --format progress
 bdd: --format pretty
 progress: --format progress
 json: --format json --out=log/resultado.json
-homologa: AMBIENTE=homologacao
 docker: AMBIENTE=docker
+cucumber: features/specs/cadastro-chamado/cadastro-chamado.feature features/specs/atende-chamado-cadastrado/atende-chamado-cadastrado.feature features/specs/usuario-reprova-chamado/usuario-reprova-chamado.feature features/specs/atende-chamado-reprovado/atende-chamado-reprovado.feature features/specs/usuario-aprova-chamado/usuario-aprova-chamado.feature
 
