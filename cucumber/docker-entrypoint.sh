@@ -37,6 +37,7 @@ echo "[ ****************** ] OK! Clone Successfull!"
 
 echo "[ ****************** ] Instalando as dependencias do Cucumber........."
 cp -av /tmp/config.yml ${cucumber_dir}/features/support
+cp -av /tmp/env.rb ${cucumber_dir}/features/support
 #cp -av /tmp/Gemfile ${cucumber_dir}
 #cp -av /tmp/Gemfile.lock ${cucumber_dir}
 cp -av /tmp/cucumber.yaml ${cucumber_dir}

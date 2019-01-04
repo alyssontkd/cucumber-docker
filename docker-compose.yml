@@ -48,7 +48,7 @@ services:
      container_name: 'cucumber-1.0'
      command: tail -f /dev/null
      environment:
-        - APPLICATION_ENV=test
+        - APPLICATION_ENV=development
      volumes:
         - /var/www/docker/cucumber-docker/cucumber/projeto-qa:/usr/src/app/cucumber-glpi
      tty: true
