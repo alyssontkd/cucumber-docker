@@ -4,6 +4,8 @@ USER root
 
 
 RUN apt-get update -qq && apt-get install -y build-essential libpq-dev openjdk-8-jre-headless lib32z1 lib32ncurses5 g++-multilib
+RUN apt-get install -y unzip xvfb libxi6 libgconf-2-4
+RUN apt-get install -y default-jdk
 
 RUN apt-get install -y curl
 RUN curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh 
@@ -27,12 +29,12 @@ RUN npm install -g phantomjs-prebuilt --unsafe-perm --upgrade --silent
 RUN apt-get install -y wget xvfb unzip
 
 # Set up the Chrome PPA
-#RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-#RUN echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+RUN echo "deb [arch=amd64]  http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
 
 # Update the package list and install chrome
-#RUN apt-get update -y
-#RUN apt-get install -y google-chrome-stable
+RUN apt-get update -y
+RUN apt-get install -y google-chrome-stable
 
 # GeckoDriver v0.23.0 
 RUN wget -q "https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-linux64.tar.gz" -O /tmp/geckodriver.tgz && tar zxf /tmp/geckodriver.tgz -C /usr/bin/ && rm /tmp/geckodriver.tgz
@@ -40,6 +42,7 @@ RUN wget -q "https://github.com/mozilla/geckodriver/releases/download/v0.23.0/ge
 # chromeDriver v2.35
 #RUN wget -q "https://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip" -O /tmp/chromedriver.zip && unzip /tmp/chromedriver.zip -d /usr/bin/ && rm /tmp/chromedriver.zip
 
+RUN apt-get install -y chromedriver
 # Put Chromedriver into the PATH
 #ENV PATH $CHROMEDRIVER_DIR:$PATH
 
@@ -56,6 +59,9 @@ WORKDIR /usr/src/app/cucumber-glpi
 COPY ./src/config.yml /tmp
 COPY ./src/cucumber.yaml /tmp
 COPY ./src/env.rb /tmp
+
+RUN export DISPLAY=:20
+#RUN Xvfb :20 -screen 0 1366x768x16 &
 
 RUN gem update --system
 RUN gem install bundler

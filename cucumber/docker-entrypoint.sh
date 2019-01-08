@@ -46,6 +46,7 @@ cp -av /tmp/cucumber.yaml ${cucumber_dir}
 #bundle lock --add-platform ruby
 #bundle lock --add-platform x86_64-linux
 bundle update
+Xvfb :20 -screen 0 1366x768x16 &
 #gem update
 #cucumber
 

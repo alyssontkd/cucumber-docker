@@ -45,9 +45,11 @@ services:
         dockerfile: Dockerfile
  #    restart: always
      image: alyssontkd/cucumber
-     container_name: 'cucumber-1.0'
+     container_name: 'cucumber-glpi'
+     command: Xvfb :20 -screen 0 1366x768x16
      command: tail -f /dev/null
      environment:
+        - DISPLAY=:20
         - APPLICATION_ENV=development
      volumes:
         - /var/www/docker/cucumber-docker/cucumber/projeto-qa:/usr/src/app/cucumber-glpi
