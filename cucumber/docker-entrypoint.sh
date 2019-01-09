@@ -42,13 +42,8 @@ cp -av /tmp/env.rb ${cucumber_dir}/features/support
 #cp -av /tmp/Gemfile.lock ${cucumber_dir}
 cp -av /tmp/cucumber.yaml ${cucumber_dir}
 
-#bundle config --delete frozen
-#bundle lock --add-platform ruby
-#bundle lock --add-platform x86_64-linux
 bundle update
-Xvfb :20 -screen 0 1366x768x16 &
-#gem update
-#cucumber
+cucumber
 
 exec "$@"
 

@@ -1,70 +1,69 @@
-FROM ruby:2.5-stretch
+FROM centos:centos7
 MAINTAINER Alysson Vicuña <alysson.vicuna@gmail.com>
 USER root
 
 
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev openjdk-8-jre-headless lib32z1 lib32ncurses5 g++-multilib
-RUN apt-get install -y unzip xvfb libxi6 libgconf-2-4
-RUN apt-get install -y default-jdk
+# install dependencies
+RUN yum update && yum install -y gcc-c++ patch readline readline-devel zlib zlib-devel \
+   libyaml-devel libffi-devel openssl-devel make \
+   bzip2 autoconf automake libtool bison iconv-devel sqlite-devel
 
-RUN apt-get install -y curl
-RUN curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh 
-RUN bash nodesource_setup.sh 
-RUN apt-get install -y build-essential nodejs libssl-dev
-RUN npm install express
-RUN node --version
-RUN npm --version
-RUN apt-get install -y git
-RUN apt-get install -y android-tools-adb
-RUN apt-get install -y vim
-RUN apt-get install gnupg2 -y
-RUN gpg2 --list-keys
-RUN gpg2 --refresh-keys
-RUN apt-get upgrade -y
-RUN apt-get install -y patch gawk g++ gcc make libc6-dev patch libreadline6-dev zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 autoconf libgdbm-dev libncurses5-dev automake libtool bison pkg-config libffi-dev
+# install auxiliar tools
+RUN yum install -y git which vim
 
-RUN npm install -g phantomjs-prebuilt --unsafe-perm --upgrade --silent
+#RUN curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+#RUN curl -sSL https://get.rvm.io | bash
+#RUN /bin/bash -c "source /etc/profile.d/rvm.sh && rvm reload && rvm install 2.5 && rvm use 2.5 --default && ruby --version"
 
-# We need wget to set up the PPA and xvfb to have a virtual screen and unzip to install the Chromedriver
-RUN apt-get install -y wget xvfb unzip
+COPY ./src/google-chrome.repo /etc/yum.repos.d/
+RUN yum install -y google-chrome-stable
+WORKDIR /tmp
 
-# Set up the Chrome PPA
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-RUN echo "deb [arch=amd64]  http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
 
-# Update the package list and install chrome
-RUN apt-get update -y
-RUN apt-get install -y google-chrome-stable
 
-# GeckoDriver v0.23.0 
-RUN wget -q "https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-linux64.tar.gz" -O /tmp/geckodriver.tgz && tar zxf /tmp/geckodriver.tgz -C /usr/bin/ && rm /tmp/geckodriver.tgz
 
-# chromeDriver v2.35
-#RUN wget -q "https://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip" -O /tmp/chromedriver.zip && unzip /tmp/chromedriver.zip -d /usr/bin/ && rm /tmp/chromedriver.zip
+#RUN repoquery --repofrompath=centos7,http://mirror.centos.org/centos/7/os/`arch` --repoid=centos7 --qf="%{location}" --whatprovides libgconf-2.so.4
+# http://mirror.centos.org/centos/7/os/x86_64/Packages/GConf2-3.2.6-8.el7.i686.rpm (gerado) 32 bits
+# http://mirror.centos.org/centos/7/os/x86_64/Packages/GConf2-3.2.6-8.el7.x86_64.rpm (renomeado para a plataforma correta) 64 bits 
 
-RUN apt-get install -y chromedriver
-# Put Chromedriver into the PATH
-#ENV PATH $CHROMEDRIVER_DIR:$PATH
 
+
+
+RUN wget http://mirror.centos.org/centos/7/os/x86_64/Packages/GConf2-3.2.6-8.el7.x86_64.rpm
+RUN rpm2cpio GConf2-3.2.6-8.el7.x86_64.rpm | cpio -idmv 
+
+RUN mkdir -p /opt/google/chrome/lib/
+RUN cp /tmp/usr/lib64/libgconf-2.so.4 /opt/google/chrome/lib/
+RUN cp /tmp/usr/lib64/libgconf-2.so.4.1.5 /opt/google/chrome/lib/
+
+RUN export LD_LIBRARY_PATH=/opt/google/chrome/lib/:$LD_LIBRARY_PATH && echo "$LD_LIBRARY_PATH"
+
+#RUN ldd /opt/google/chrome/chrome | grep "not found"
+RUN echo "export PATH=$PATH" > /etc/environment
 
 RUN echo "[******] Copying security certified.";
-COPY ./src/poupex.com.br.crt /usr/local/share/ca-certificates/
+#COPY ./src/poupex.com.br.crt /usr/local/share/ca-certificates/ #if Debian or Ubuntu
+#RUN update-ca-certificates #if Debian or Ubuntu
 
-RUN update-ca-certificates
+#if RedHat or CentOs
+COPY ./src/poupex.com.br.crt /tmp
+COPY ./src/poupex.com.br.crt /etc/pki/ca-trust/source/anchors/
+RUN update-ca-trust check
+RUN update-ca-trust enable
+RUN update-ca-trust extract
+RUN update-ca-trust 
 
 WORKDIR /usr/src/app/cucumber-glpi
 
-#COPY ./src/Gemfile /tmp
-#COPY ./src/Gemfile.lock /tmp
 COPY ./src/config.yml /tmp
 COPY ./src/cucumber.yaml /tmp
 COPY ./src/env.rb /tmp
 
-RUN export DISPLAY=:20
-#RUN Xvfb :20 -screen 0 1366x768x16 &
-
-RUN gem update --system
-RUN gem install bundler
+# Instalando o Ruby e atualizando as dependencias
+RUN curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+RUN curl -sSL https://get.rvm.io | bash
+RUN /bin/bash -c "source /etc/profile.d/rvm.sh && rvm reload && rvm install 2.5 && rvm use 2.5 --default && ruby --version && gem update --system && gem install bundler"
 
 COPY docker-entrypoint.sh /usr/local/bin/
-ENTRYPOINT ["docker-entrypoint.sh"]
+#ENTRYPOINT ["/bin/bash" , "-c", "source /etc/profile.d/rvm.sh && rvm reload && docker-entrypoint.sh"]
+ENTRYPOINT ["/bin/bash" , "-c", "source /etc/profile.d/rvm.sh && rvm reload && docker-entrypoint.sh && tail -f /dev/null"]
