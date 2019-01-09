@@ -2,7 +2,6 @@ FROM centos:centos7
 MAINTAINER Alysson Vicuña <alysson.vicuna@gmail.com>
 USER root
 
-
 # install dependencies
 RUN yum update && yum install -y gcc-c++ patch readline readline-devel zlib zlib-devel \
    libyaml-devel libffi-devel openssl-devel make \
@@ -11,24 +10,10 @@ RUN yum update && yum install -y gcc-c++ patch readline readline-devel zlib zlib
 # install auxiliar tools
 RUN yum install -y git which vim unzip
 
-#RUN curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-#RUN curl -sSL https://get.rvm.io | bash
-#RUN /bin/bash -c "source /etc/profile.d/rvm.sh && rvm reload && rvm install 2.5 && rvm use 2.5 --default && ruby --version"
-
 COPY ./src/google-chrome.repo /etc/yum.repos.d/
 RUN yum install -y google-chrome-stable
+
 WORKDIR /tmp
-
-
-
-
-#RUN repoquery --repofrompath=centos7,http://mirror.centos.org/centos/7/os/`arch` --repoid=centos7 --qf="%{location}" --whatprovides libgconf-2.so.4
-# http://mirror.centos.org/centos/7/os/x86_64/Packages/GConf2-3.2.6-8.el7.i686.rpm (gerado) 32 bits
-# http://mirror.centos.org/centos/7/os/x86_64/Packages/GConf2-3.2.6-8.el7.x86_64.rpm (renomeado para a plataforma correta) 64 bits 
-
-
-
-
 RUN wget http://mirror.centos.org/centos/7/os/x86_64/Packages/GConf2-3.2.6-8.el7.x86_64.rpm
 RUN rpm2cpio GConf2-3.2.6-8.el7.x86_64.rpm | cpio -idmv 
 
@@ -38,13 +23,11 @@ RUN cp /tmp/usr/lib64/libgconf-2.so.4.1.5 /opt/google/chrome/lib/
 
 RUN export LD_LIBRARY_PATH=/opt/google/chrome/lib/:$LD_LIBRARY_PATH && echo "$LD_LIBRARY_PATH"
 
-#RUN ldd /opt/google/chrome/chrome | grep "not found"
 RUN echo "export PATH=$PATH" > /etc/environment
 
 RUN echo "[******] Copying security certified.";
 #COPY ./src/poupex.com.br.crt /usr/local/share/ca-certificates/ #if Debian or Ubuntu
 #RUN update-ca-certificates #if Debian or Ubuntu
-
 #if RedHat or CentOs
 COPY ./src/poupex.com.br.crt /tmp
 COPY ./src/poupex.com.br.crt /etc/pki/ca-trust/source/anchors/
