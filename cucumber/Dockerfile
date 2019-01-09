@@ -9,7 +9,7 @@ RUN yum update && yum install -y gcc-c++ patch readline readline-devel zlib zlib
    bzip2 autoconf automake libtool bison iconv-devel sqlite-devel
 
 # install auxiliar tools
-RUN yum install -y git which vim
+RUN yum install -y git which vim unzip
 
 #RUN curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 #RUN curl -sSL https://get.rvm.io | bash
@@ -53,6 +53,9 @@ RUN update-ca-trust enable
 RUN update-ca-trust extract
 RUN update-ca-trust 
 
+RUN curl -s "https://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip" > chromedriver.zip
+RUN unzip chromedriver.zip && mv chromedriver /usr/local/bin/
+
 WORKDIR /usr/src/app/cucumber-glpi
 
 COPY ./src/config.yml /tmp
@@ -65,5 +68,5 @@ RUN curl -sSL https://get.rvm.io | bash
 RUN /bin/bash -c "source /etc/profile.d/rvm.sh && rvm reload && rvm install 2.5 && rvm use 2.5 --default && ruby --version && gem update --system && gem install bundler"
 
 COPY docker-entrypoint.sh /usr/local/bin/
-#ENTRYPOINT ["/bin/bash" , "-c", "source /etc/profile.d/rvm.sh && rvm reload && docker-entrypoint.sh"]
+
 ENTRYPOINT ["/bin/bash" , "-c", "source /etc/profile.d/rvm.sh && rvm reload && docker-entrypoint.sh && tail -f /dev/null"]

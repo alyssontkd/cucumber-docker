@@ -43,7 +43,7 @@ cp -av /tmp/env.rb ${cucumber_dir}/features/support
 cp -av /tmp/cucumber.yaml ${cucumber_dir}
 
 bundle update
-cucumber
+#cucumber
 
 exec "$@"
 
