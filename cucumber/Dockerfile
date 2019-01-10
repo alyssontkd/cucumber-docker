@@ -48,7 +48,7 @@ COPY ./src/env.rb /tmp
 # Instalando o Ruby e atualizando as dependencias
 RUN curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 RUN curl -sSL https://get.rvm.io | bash
-RUN /bin/bash -c "source /etc/profile.d/rvm.sh && rvm reload && rvm install 2.5 && rvm use 2.5 --default && ruby --version && gem update --system && gem install bundler"
+RUN /bin/bash -c "source /etc/profile.d/rvm.sh && rvm reload && rvm install 2.5 && rvm use 2.5 --default && ruby --version && gem update --system && gem install bundler && gem update"
 
 COPY docker-entrypoint.sh /usr/local/bin/
 

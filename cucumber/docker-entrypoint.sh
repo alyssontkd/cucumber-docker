@@ -30,8 +30,7 @@ echo "[ ****************** ] Arquivo já existe e foi localizado. Acessando dire
 cd ${cucumber_dir}
 pwd
 git remote update
-git checkout -f master
-git pull origin master
+git reset --hard origin/master
 git describe --tags
 echo "[ ****************** ] OK! Clone Successfull!"
 
