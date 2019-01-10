@@ -43,7 +43,7 @@ cp -av /tmp/cucumber.yaml ${cucumber_dir}
 
 gem update
 bundle install
-bundle update
+bundle update --all
 #cucumber
 
 exec "$@"
