@@ -49,7 +49,7 @@ services:
 #     command: Xvfb :20 -screen 0 1366x768x16
      command: tail -f /dev/null
      environment:
-        - DISPLAY=:20
+        - DISPLAY=:99
         - APPLICATION_ENV=development
      volumes:
         - /var/www/docker/cucumber-docker/cucumber/projeto-qa:/usr/src/app/cucumber-glpi

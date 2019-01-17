@@ -25,7 +25,8 @@ if [ ! -e "${cucumber_dir}/Gemfile" ]; then
     echo "https://${git_user}:${git_pswd}@gitlab.poupex.com.br" > "${cucumber_cred_file}"
     echo "[ ****************** ] Ending Endpoint of Application"
 fi
-
+echo "[ ****************** ] Rodando o permissionamento...."
+#chmod -R 777 ${cucumber_dir}
 echo "[ ****************** ] Arquivo já existe e foi localizado. Acessando diretorio da aplicacao"
 cd ${cucumber_dir}
 pwd
