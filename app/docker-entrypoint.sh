@@ -34,10 +34,11 @@ fi
 echo "[ ****************** ] Changing owner and group from the Project to 'www-data' "
 chmod 775 /var/www/html -Rf
 chown www-data:www-data -R ${glpi_dir}
+yes | cp -av /tmp/src/actions/configs/config_db.php ${glpi_dir}/config 
 
 echo "[ ****************** ] Importing data in database before ending buinid of Application"
 #Realiza a carga da base de dados
-mysql -u root -h database-mysql-glpi -p12345678 < ${script_banco_glpi}
+mysql -u root -h database-mysql-glpi-pipeline -p12345678 < ${script_banco_glpi}
 
 echo "[ ****************** ] Ending Endpoint of Application"
 cd ${glpi_dir}
