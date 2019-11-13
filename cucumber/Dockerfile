@@ -54,8 +54,8 @@ RUN apt-get install -y google-chrome-stable ttf-mscorefonts-installer
 #RUN wget -q "https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-linux64.tar.gz" -O /tmp/geckodriver.tgz && tar zxf /tmp/geckodriver.tgz -C /usr/bin/ && rm /tmp/geckodriver.tgz
 
 # chromeDriver v79.0.3945
-RUN wget -q "https://chromedriver.storage.googleapis.com/79.0.3945.16/chromedriver_linux64.zip" -O /tmp/chromedriver.zip && unzip /tmp/chromedriver.zip -d /usr/bin/ && rm /tmp/chromedriver.zip
-#RUN apt-get install -y chromedriver
+#RUN wget -q "https://chromedriver.storage.googleapis.com/79.0.3945.16/chromedriver_linux64.zip" -O /tmp/chromedriver.zip && unzip /tmp/chromedriver.zip -d /usr/bin/ && rm /tmp/chromedriver.zip
+RUN apt-get install -y chromedriver
 
 COPY ./src/poupex.com.br.crt /usr/local/share/ca-certificates/
 RUN update-ca-certificates
