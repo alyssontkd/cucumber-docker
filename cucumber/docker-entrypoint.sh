@@ -46,6 +46,9 @@ touch ${cucumber_dir}/log/report.json
 touch ${cucumber_dir}/log/resultado.json
 cp -av /tmp/cucumber.yaml ${cucumber_dir}
 
+rm -f ${cucumber_dir}/features/support/linux.env.rb
+rm -f ${cucumber_dir}/features/support/windows.env.rb
+
 bundle install
 bundle update --all
 gem update
