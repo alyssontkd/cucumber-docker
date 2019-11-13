@@ -49,6 +49,9 @@ cp -av /tmp/cucumber.yaml ${cucumber_dir}
 bundle install
 bundle update --all
 gem update
+gem install headless
+gem install rspec
+gem install rspec-retry
 #cucumber
 
 exec "$@"
