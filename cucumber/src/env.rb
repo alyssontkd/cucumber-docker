@@ -39,8 +39,8 @@ Capybara.register_driver(:headless_chrome_vertenti) do |app|
 end
 
 Capybara.configure do |config|
-  #config.default_driver = :headless_chromium # Sem navegador customizado
-  config.default_driver = :headless_chrome_vertenti # Sem navegador customizado
+  config.default_driver = :headless_chromium # Sem navegador customizado
+  #config.default_driver = :headless_chrome_vertenti # Sem navegador customizado
   config.app_host = CONFIG['url_padrao']
   Capybara.default_max_wait_time = 100
 end
