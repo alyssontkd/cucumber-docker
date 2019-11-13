@@ -1,10 +1,10 @@
 default: -p json -p bdd -p progress -p json -p docker -p cucumber
 
 html: --format html --out=log/features.html
+#json: --format json --out=log/resultado.json
 json: -f json -o log/report.json
 bdd: --format pretty
 progress: --format progress
-json: --format json --out=log/resultado.json
 homologa: AMBIENTE=homologacao
 devel: AMBIENTE=desenvolvimento
 teste: AMBIENTE=teste
