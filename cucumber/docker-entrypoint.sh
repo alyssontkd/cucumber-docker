@@ -5,7 +5,7 @@ git_user='alyssontkd'
 git_pswd='#Magatti2019#'
 cucumber_dir='/usr/src/app/cucumber-estrutura'
 cucumber_cred_file="${cucumber_dir}/.git-credentials"
-path_remote_origin='https://github.com/alyssontkd/cucumber-petshop.git'
+path_remote_origin='https://github.com/alyssontkd/projeto-cucumber-petshop.git'
 
 echo "[ ****************** ] Listando diretorio atual"
 ls -la
@@ -17,6 +17,9 @@ if [ ! -e "${cucumber_dir}/Gemfile" ]; then
     echo "[ ****************** ] Application not found in ${cucumber_dir} - Cloning now..."
     mkdir -p ${cucumber_dir}
     cd ${cucumber_dir}
+    pwd
+    ls -lah
+    git remote -v
     rm -rf .git
     git init
     git remote add origin ${path_remote_origin}
@@ -39,8 +42,8 @@ echo "[ ****************** ] OK! Clone Successfull!"
 echo "[ ****************** ] Instalando as dependencias do Cucumber........."
 cp -av /tmp/config.yml ${cucumber_dir}/features/support
 cp -av /tmp/env.rb ${cucumber_dir}/features/support
-#cp -av /tmp/Gemfile ${cucumber_dir}
-#cp -av /tmp/Gemfile.lock ${cucumber_dir}
+touch ${cucumber_dir}/log/report.json
+touch ${cucumber_dir}/log/resultado.json
 cp -av /tmp/cucumber.yaml ${cucumber_dir}
 
 bundle install
